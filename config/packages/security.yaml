@@ -25,6 +25,9 @@ security:
                 authenticators:
                     - App\Security\LoginFormAuthenticator
 
+    role_hierarchy:
+        ROLE_USER:   ROLE_USER
+        ROLE_ADMIN:  ROLE_ADMIN
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#firewalls-authentication

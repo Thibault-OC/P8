@@ -47,7 +47,7 @@ class User implements UserInterface
     private $tasks;
 
     /**
-     * @ORM\Column(type="json")
+     * @ORM\Column(name="roles", type="json")
      */
     private $roles = [];
 
