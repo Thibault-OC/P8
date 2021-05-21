@@ -30,7 +30,17 @@ class TaskController extends AbstractController
 
         $form->handleRequest($request);
 
-        if ($form->isSubmitted()) {
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            if($this->getUser()){
+                $task->setUser($this->getUser());
+            }
+            else{
+                $this->addFlash('error', 'Vous devez vous connecter pour ajouter une tache');
+                return $this->redirectToRoute('task_create');
+            }
+
+
             $em = $this->getDoctrine()->getManager();
 
             $em->persist($task);
@@ -85,13 +95,24 @@ class TaskController extends AbstractController
      */
     public function deleteTaskAction(Task $task)
     {
-        $em = $this->getDoctrine()->getManager();
-        $em->remove($task);
-        $em->flush();
 
-        $this->addFlash('success', 'La tâche a bien été supprimée.');
+        if($this->getUser() == $task->getUser()){
 
-        return $this->redirectToRoute('task_list');
+            $em = $this->getDoctrine()->getManager();
+            $em->remove($task);
+            $em->flush();
+
+            $this->addFlash('success', 'La tâche a bien été supprimée.');
+
+            return $this->redirectToRoute('task_list');
+        }
+        else{
+            $this->addFlash('error', 'Vous devez vous connecter ou etre le createur pour supprimer une tâche');
+
+            return $this->redirectToRoute('task_list');
+        }
+
+
     }
 
 
