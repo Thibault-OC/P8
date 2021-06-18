@@ -64,11 +64,21 @@ class TaskController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
 
-            $this->addFlash('success', 'La tâche a bien été modifiée.');
+            if($this->getUser()){
+                $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('task_list');
+                $this->addFlash('success', 'La tâche a bien été modifiée.');
+
+                return $this->redirectToRoute('task_list');
+            }
+            else{
+
+                $this->addFlash('error', 'Vous devez vous connecter pour modifier une tache');
+
+                return $this->redirectToRoute('task_list');
+            }
+
         }
 
         return $this->render('task/edit.html.twig', [
@@ -82,12 +92,20 @@ class TaskController extends AbstractController
      */
     public function toggleTaskAction(Task $task)
     {
-        $task->toggle(!$task->isDone());
-        $this->getDoctrine()->getManager()->flush();
+        if($this->getUser()) {
+            $task->toggle(!$task->isDone());
+            $this->getDoctrine()->getManager()->flush();
 
-        $this->addFlash('success', sprintf('La tâche %s a bien été marquée comme faite.', $task->getTitle()));
+            $this->addFlash('success', sprintf('La tâche %s a bien été marquée comme faite.', $task->getTitle()));
 
-        return $this->redirectToRoute('task_list');
+            return $this->redirectToRoute('task_list');
+        }
+        else{
+            $this->addFlash('error', 'Vous devez vous connecter pour valider une tache');
+
+            return $this->redirectToRoute('task_list');
+
+        }
     }
 
     /**
@@ -96,7 +114,7 @@ class TaskController extends AbstractController
     public function deleteTaskAction(Task $task)
     {
 
-        if($this->getUser() == $task->getUser()){
+        if($this->getUser() == $task->getUser() || $this->isGranted('ROLE_ADMIN') == true){
 
             $em = $this->getDoctrine()->getManager();
             $em->remove($task);

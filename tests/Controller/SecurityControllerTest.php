@@ -36,7 +36,9 @@ class SecurityControllerTest extends WebTestCase
         $crawler = $this->client->request('GET', '/');
         $crawler->selectLink('Se déconnecter')->link();
         $this->throwException(new \Exception('Logout'));
+
         self::assertEquals(200, $this->client->getResponse()->getStatusCode());
+
     }
 
 }
