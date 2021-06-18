@@ -17,7 +17,7 @@ class SecurityControllerTest extends WebTestCase
     {
         $crawler = $this->client->request('GET', '/login');
         $form = $crawler->selectButton('Se connecter')->form();
-        $this->client->submit($form, ['_username' => 'tibo', '_password' => 'tibo']);
+        $this->client->submit($form, ['_username' => 'admin', '_password' => 'password']);
 
     }
 
@@ -30,7 +30,7 @@ class SecurityControllerTest extends WebTestCase
         return $this->client;
     }
 
-    public function testLogOut()
+    public function testLogout()
     {
         $this->loginUser();
         $crawler = $this->client->request('GET', '/');

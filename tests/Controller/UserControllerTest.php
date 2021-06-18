@@ -49,6 +49,7 @@ class UserControllerTest extends WebTestCase
         $crawler = $client->request('GET', '/users/57/edit');
         static::assertSame(200, $client->getResponse()->getStatusCode());
 
+
         $form = $crawler->selectButton('Modifier')->form();
         $client->submit($form, ['user[username]' => 'test200', 'user[password][first]' => 'test' , 'user[password][second]' => 'test' ,'user[email]' => 'email@email.test' ,'user[Roles]' => 'ROLE_ADMIN'  ]);
 
