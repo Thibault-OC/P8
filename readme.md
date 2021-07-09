@@ -16,7 +16,7 @@
 <h2>Installation avec git</h2>
 
 <ul>
-    <li>Utiliser la ligne de commande git git clone <code>https://github.com/Thibault-OC/P8.git</code></li>
+    <li>Utiliser la ligne de commande git <code>git clone https://github.com/Thibault-OC/P8.git</code></li>
     <li>Déplacez-vous dans le dossier du projet avec la commande <code>cd P8</code></li>
     <li>Installer les dépendances de composer <code>composer install</code></li>
 </ul>
