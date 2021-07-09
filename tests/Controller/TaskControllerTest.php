@@ -97,7 +97,7 @@ class TaskControllerTest extends WebTestCase{
     {
         $client = static::createClient();
 
-        $crawler = $client->request('GET', '/tasks/257/delete');
+        $crawler = $client->request('GET', '/tasks/250/delete');
         static::assertSame(302, $client->getResponse()->getStatusCode());
 
         $crawler = $client->followRedirect();
@@ -113,7 +113,7 @@ class TaskControllerTest extends WebTestCase{
         $securityControllerTest->setUp();
         $client = $securityControllerTest->testLogin();
 
-        $crawler = $client->request('GET', '/tasks/257/delete');
+        $crawler = $client->request('GET', '/tasks/250/delete');
         static::assertSame(302, $client->getResponse()->getStatusCode());
 
         $crawler = $client->followRedirect();

@@ -35,4 +35,17 @@ class Kernel extends BaseKernel
             (require $path)($routes->withPath($path), $this);
         }
     }
+
+   /* public function registerBundles()
+    {
+        // ...
+        if (in_array($this->getEnvironment(), array('dev', 'test'), true)) {
+            // ...
+            if ('test' === $this->getEnvironment()) {
+                $bundles[] = new Liip\TestFixturesBundle\LiipTestFixturesBundle();
+            }
+        }
+
+        return $bundles;
+    }*/
 }
