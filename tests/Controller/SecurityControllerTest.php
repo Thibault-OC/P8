@@ -37,8 +37,43 @@ class SecurityControllerTest extends WebTestCase
         $crawler->selectLink('Se déconnecter')->link();
         $this->throwException(new \Exception('Logout'));
 
+
         self::assertEquals(200, $this->client->getResponse()->getStatusCode());
 
     }
 
+    public function testLoginActionCsrfWrongTokenIsDenied()
+    {
+        $this->loginUser();
+        $crawler = $this->client->request('GET', '/login');
+        $form = $crawler->selectButton('Se connecter')->form();
+        $this->client->submit($form, ['_username' => 'admin', '_password' => 'password','_csrf_token' => 'wrongToken']);
+
+        $this->assertResponseRedirects();
+        $this->client->followRedirect();
+        static::assertStringContainsString('CSRF', $this->client->getResponse()->getContent());
+    }
+
+    public function testLoginWrongId()
+    {
+        $this->loginUser();
+        $crawler = $this->client->request('GET', '/login');
+        $form = $crawler->selectButton('Se connecter')->form();
+        $this->client->submit($form, ['_username' => 'admin356', '_password' => 'password2']);
+
+        $crawler = $this->client->followRedirect();
+        static::assertSame(200, $this->client->getResponse()->getStatusCode());
+        $this->assertEquals(1, $crawler->filter('div.alert-danger')->count());
+    }
+    public function testLoginWrongPassword()
+    {
+        $this->loginUser();
+        $crawler = $this->client->request('GET', '/login');
+        $form = $crawler->selectButton('Se connecter')->form();
+        $this->client->submit($form, ['_username' => 'admin', '_password' => 'password2']);
+
+        $crawler = $this->client->followRedirect();
+        static::assertSame(200, $this->client->getResponse()->getStatusCode());
+        $this->assertEquals(1, $crawler->filter('div.alert-danger')->count());
+    }
 }
