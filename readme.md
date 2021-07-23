@@ -1,17 +1,14 @@
 <h1> ToDo & Co </h1>
 
-
-
 <h2>Technologies utilisées</h2>
 
 <p>Symfony : 5.2</p>
-<p>PHP : 7.3.23</p>
 
+<p>PHP : 7.3.23</p>
 
 <h2>Codacy</h2>
 
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/c741d7786baf4bf2885193e024cdaf15)](https://www.codacy.com/gh/Thibault-OC/P7/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Thibault-OC/P7&amp;utm_campaign=Badge_Grade)
-
 
 <h2>Installation avec git</h2>
 
@@ -35,13 +32,10 @@
 <li>Insertion des données de test<code> php bin/console doctrine:fixtures:load</code></li>
 </ul>
 
-
 <h3>Identifiants test admin</h3>
 
  <p><b>Nom d'utilisateur:</b> admin</p>
  <p><b>Mot de passe:</b> password </p>
-
-
 
 <h3>Identifiants test d'un utilisateur</h3>
 
