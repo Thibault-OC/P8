@@ -35,7 +35,11 @@ body {
 }
 
 .table tbody tr.covered-by-large-tests,
-li.covered-by-large-tests, tr.success, td.success, li.success, span.success {
+li.covered-by-large-tests,
+tr.success,
+td.success,
+li.success,
+span.success {
   background-color: #dff0d8;
 }
 
@@ -51,12 +55,14 @@ li.covered-by-small-tests {
 
 .table tbody tr.danger,
 .table tbody td.danger,
-li.danger, span.danger {
+li.danger,
+span.danger {
   background-color: #f2dede;
 }
 
 .table tbody td.warning,
-li.warning, span.warning {
+li.warning,
+span.warning {
   background-color: #fcf8e3;
 }
 
@@ -95,7 +101,8 @@ pre span.string {
 }
 
 span.success,
-span.warning, span.danger {
+span.warning,
+span.danger {
   margin-right: 2px;
   padding-left: 10px;
   padding-right: 10px;

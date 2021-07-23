@@ -42,6 +42,7 @@ body {
 
 .thumbnail {
   padding: 0;
+  margin-bottom: 50px;
 }
 
 .thumbnail .caption-full {
@@ -79,8 +80,4 @@ footer {
 
 .author.anonyme {
   color: red;
-}
-
-.thumbnail {
-  margin-bottom: 50px;
 }
