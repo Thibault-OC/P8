@@ -53,12 +53,12 @@ footer {
   margin: 50px 0;
 }
 
-.pagination{
+.pagination {
   display: block;
   text-align: center;
 }
 
-.pagination span{
+.pagination span {
   padding: 5px;
   border: 1px solid #ddd;
   height: 30px;
@@ -68,17 +68,19 @@ footer {
   border-radius: 4px;
 }
 
-.pagination a{
+.pagination a {
   color: #000;
 }
-.author{
+
+.author {
   text-transform: capitalize;
   font-weight: bold;
 }
-.author.anonyme{
+
+.author.anonyme {
   color: red;
 }
 
-.thumbnail{
+.thumbnail {
   margin-bottom: 50px;
 }
