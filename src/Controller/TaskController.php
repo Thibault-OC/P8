@@ -75,13 +75,12 @@ class TaskController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            if($this->getUser()){
-                $task->setUser($this->getUser());
-            }
-            else{
+            if(!$this->getUser()){
                 $this->addFlash('error', 'Vous devez vous connecter pour ajouter une tache');
                 return $this->redirectToRoute('task_create');
             }
+
+            $task->setUser($this->getUser());
 
 
             $em = $this->getDoctrine()->getManager();
@@ -137,20 +136,19 @@ class TaskController extends AbstractController
      */
     public function toggleTaskAction(Task $task)
     {
-        if($this->getUser()) {
-            $task->toggle(!$task->isDone());
-            $this->getDoctrine()->getManager()->flush();
+        if(!$this->getUser()) {
 
-            $this->addFlash('success', sprintf('La tâche %s a bien été marquée comme faite.', $task->getTitle()));
-
-            return $this->redirectToRoute('task_list');
-        }
-        else{
             $this->addFlash('error', 'Vous devez vous connecter pour valider une tache');
 
             return $this->redirectToRoute('task_list');
-
         }
+
+        $task->toggle(!$task->isDone());
+        $this->getDoctrine()->getManager()->flush();
+
+        $this->addFlash('success', sprintf('La tâche %s a bien été marquée comme faite.', $task->getTitle()));
+
+        return $this->redirectToRoute('task_list');
     }
 
     /**
@@ -169,11 +167,11 @@ class TaskController extends AbstractController
 
             return $this->redirectToRoute('task_list');
         }
-        else{
+
             $this->addFlash('error', 'Vous devez vous connecter ou etre le createur pour supprimer une tâche');
 
             return $this->redirectToRoute('task_list');
-        }
+
 
 
     }
