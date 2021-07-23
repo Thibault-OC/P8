@@ -30,7 +30,7 @@ body {
 }
 
 .table-borderless th,
-.table-borderless td {
+.table-borderless > td {
   border: 0;
 }
 
