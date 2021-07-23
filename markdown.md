@@ -26,6 +26,4 @@
 </li>
 <li>Créez une pull request pour vos modifications sur le projet</li>
 <li>Le pull Request validé rebasez une nouvelle branche sur "main"</li>
-
-
 </ul>
