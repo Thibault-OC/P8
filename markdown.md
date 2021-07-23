@@ -16,10 +16,12 @@
 <h2>Contributions</h2>
 <ul>
 <li>Ajouter/Modifier une fonctionnalité du projet</li>
-<li>Pousser les modifications sur le repository avec les commandes suivantes <br>
-    Indexe les modifications qui ont été faites dans les fichiers <code>git add NomDuFichier</code><br>
-    Enregirster les modifications avec un commit <code>git commit -m "ma nouvelle fonctionnalité"</code>
-    Pousser ces modifications sur le repository <code>git push</code>
+<li>Pousser les modifications sur le repository avec les commandes suivantes : 
+    <ul>
+        <li>Indexe les modifications qui ont été faites dans les fichiers <code>git add NomDuFichier</code></li>
+        <li>Enregirster les modifications avec un commit <code>git commit -m "ma nouvelle fonctionnalité"</code></li>
+        <li>Pousser ces modifications sur le repository <code>git push</code></li>
+    </ul>
 </li>
 
 </ul>
