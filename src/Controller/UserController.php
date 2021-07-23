@@ -15,11 +15,22 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 class UserController extends AbstractController
 {
     /**
-     * @Route("/users", name="user_list")
+     * @Route("/users/liste", name="user_list")
      */
     public function listAction()
     {
-        return $this->render('user/list.html.twig', ['users' => $this->getDoctrine()->getRepository('App:User')->findAll()]);
+
+        if($this->getUser()) {
+            return $this->render('user/list.html.twig',
+                ['users' => $this->getDoctrine()->getRepository('App:User')->findAll()]);
+        }
+        else{
+
+            $this->addFlash('error', 'Vous devez vous connecter pour modifier une tache');
+
+            return $this->redirectToRoute('homepage');
+        }
+
     }
 
     /**
@@ -33,8 +44,8 @@ class UserController extends AbstractController
 
         if ($form->isSubmitted()) {
 
-            $roles = $user->getRoles();
-            $user->setRoles($roles);
+            //$roles = $user->getRoles();
+            //$user->setRoles($roles);
             $em = $this->getDoctrine()->getManager();
             $password = $passwordEncoder->encodePassword($user, $user->getPassword());
             $user->setPassword($password);
@@ -53,14 +64,14 @@ class UserController extends AbstractController
     /**
      * @Route("/users/{id}/edit", name="user_edit")
      */
-    public function editAction(User $user, Request $request)
+    public function editAction(User $user, Request $request , UserPasswordEncoderInterface $passwordEncoder)
     {
         $form = $this->createForm(UserType::class, $user);
 
         $form->handleRequest($request);
 
-        if ($form->isSubmitted()) {
-            $password = $this->get('security.password_encoder')->encodePassword($user, $user->getPassword());
+        if ($form->isSubmitted() && $form->isValid()) {
+            $password = $passwordEncoder->encodePassword($user, $user->getPassword());
             $user->setPassword($password);
 
             $this->getDoctrine()->getManager()->flush();

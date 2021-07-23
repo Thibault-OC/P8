@@ -4,21 +4,64 @@ namespace App\Controller;
 
 use App\Entity\Task;
 use App\Form\TaskType;
+use App\Repository\TaskRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-
+use Knp\Component\Pager\PaginatorInterface;
 
 class TaskController extends AbstractController
 {
     /**
      * @Route("/tasks", name="task_list")
      */
-    public function listAction()
+    public function listAction(Request $request, PaginatorInterface $paginator , TaskRepository $taskRepository)
     {
-        return $this->render('task/list.html.twig', ['tasks' => $this->getDoctrine()->getRepository('App:Task')->findAll()]);
+
+        $tasks = $taskRepository->findAll();
+
+        $articles = $paginator->paginate(
+            $tasks, // Requête contenant les données à paginer (ici nos tasks)
+            $request->query->getInt('page', 1), // Numéro de la page en cours, passé dans l'URL, 1 si aucune page
+            6 // Nombre de résultats par page
+        );
+
+        return $this->render('task/list.html.twig', ['tasks' => $articles]);
     }
+
+    /**
+     * @Route("/tasks/finished", name="task_list_finished")
+     */
+    public function listActionFinished(Request $request, PaginatorInterface $paginator ,TaskRepository $taskRepository) :Response
+    {
+        $tasks = $taskRepository->findBy(
+            ['isDone' => 1]
+        );
+        $articles = $paginator->paginate(
+            $tasks, // Requête contenant les données à paginer (ici nos tasks)
+            $request->query->getInt('page', 1), // Numéro de la page en cours, passé dans l'URL, 1 si aucune page
+            6 // Nombre de résultats par page
+        );
+        return $this->render('task/list.html.twig', ['tasks' => $articles]);
+    }
+
+    /**
+     * @Route("/tasks/notdone", name="task_not_done")
+     */
+    public function listActionNotDone(Request $request, PaginatorInterface $paginator ,TaskRepository $taskRepository) :Response
+    {
+        $tasks = $taskRepository->findBy(
+            ['isDone' => 0]
+        );
+        $articles = $paginator->paginate(
+            $tasks, // Requête contenant les données à paginer (ici nos tasks)
+            $request->query->getInt('page', 1), // Numéro de la page en cours, passé dans l'URL, 1 si aucune page
+            6 // Nombre de résultats par page
+        );
+        return $this->render('task/list.html.twig', ['tasks' => $articles]);
+    }
+
 
     /**
      * @Route("/tasks/create", name="task_create")
@@ -63,12 +106,24 @@ class TaskController extends AbstractController
 
         $form->handleRequest($request);
 
-        if ($form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+        if ($form->isSubmitted() && $form->isValid()) {
 
-            $this->addFlash('success', 'La tâche a bien été modifiée.');
+            if($this->getUser()){
 
-            return $this->redirectToRoute('task_list');
+                    $this->getDoctrine()->getManager()->flush();
+
+                    $this->addFlash('success', 'La tâche a bien été modifiée.');
+
+                    return $this->redirectToRoute('task_list');
+
+            }
+            else{
+
+                $this->addFlash('error', 'Vous devez vous connecter pour modifier une tache');
+
+                return $this->redirectToRoute('task_list');
+            }
+
         }
 
         return $this->render('task/edit.html.twig', [
@@ -82,12 +137,20 @@ class TaskController extends AbstractController
      */
     public function toggleTaskAction(Task $task)
     {
-        $task->toggle(!$task->isDone());
-        $this->getDoctrine()->getManager()->flush();
+        if($this->getUser()) {
+            $task->toggle(!$task->isDone());
+            $this->getDoctrine()->getManager()->flush();
 
-        $this->addFlash('success', sprintf('La tâche %s a bien été marquée comme faite.', $task->getTitle()));
+            $this->addFlash('success', sprintf('La tâche %s a bien été marquée comme faite.', $task->getTitle()));
 
-        return $this->redirectToRoute('task_list');
+            return $this->redirectToRoute('task_list');
+        }
+        else{
+            $this->addFlash('error', 'Vous devez vous connecter pour valider une tache');
+
+            return $this->redirectToRoute('task_list');
+
+        }
     }
 
     /**
@@ -96,7 +159,7 @@ class TaskController extends AbstractController
     public function deleteTaskAction(Task $task)
     {
 
-        if($this->getUser() == $task->getUser()){
+        if($this->getUser() == $task->getUser() || $this->isGranted('ROLE_ADMIN') == true){
 
             $em = $this->getDoctrine()->getManager();
             $em->remove($task);
