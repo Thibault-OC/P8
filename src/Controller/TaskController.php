@@ -9,38 +9,57 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-
+use Knp\Component\Pager\PaginatorInterface;
 
 class TaskController extends AbstractController
 {
     /**
      * @Route("/tasks", name="task_list")
      */
-    public function listAction()
+    public function listAction(Request $request, PaginatorInterface $paginator , TaskRepository $taskRepository)
     {
-        return $this->render('task/list.html.twig', ['tasks' => $this->getDoctrine()->getRepository('App:Task')->findAll()]);
+
+        $tasks = $taskRepository->findAll();
+
+        $articles = $paginator->paginate(
+            $tasks, // Requête contenant les données à paginer (ici nos tasks)
+            $request->query->getInt('page', 1), // Numéro de la page en cours, passé dans l'URL, 1 si aucune page
+            6 // Nombre de résultats par page
+        );
+
+        return $this->render('task/list.html.twig', ['tasks' => $articles]);
     }
 
     /**
      * @Route("/tasks/finished", name="task_list_finished")
      */
-    public function listActionFinished(TaskRepository $taskRepository) :Response
+    public function listActionFinished(Request $request, PaginatorInterface $paginator ,TaskRepository $taskRepository) :Response
     {
         $tasks = $taskRepository->findBy(
             ['isDone' => 1]
         );
-        return $this->render('task/list.html.twig', ['tasks' => $tasks]);
+        $articles = $paginator->paginate(
+            $tasks, // Requête contenant les données à paginer (ici nos tasks)
+            $request->query->getInt('page', 1), // Numéro de la page en cours, passé dans l'URL, 1 si aucune page
+            6 // Nombre de résultats par page
+        );
+        return $this->render('task/list.html.twig', ['tasks' => $articles]);
     }
 
     /**
      * @Route("/tasks/notdone", name="task_not_done")
      */
-    public function listActionNotDone(TaskRepository $taskRepository) :Response
+    public function listActionNotDone(Request $request, PaginatorInterface $paginator ,TaskRepository $taskRepository) :Response
     {
         $tasks = $taskRepository->findBy(
             ['isDone' => 0]
         );
-        return $this->render('task/list.html.twig', ['tasks' => $tasks]);
+        $articles = $paginator->paginate(
+            $tasks, // Requête contenant les données à paginer (ici nos tasks)
+            $request->query->getInt('page', 1), // Numéro de la page en cours, passé dans l'URL, 1 si aucune page
+            6 // Nombre de résultats par page
+        );
+        return $this->render('task/list.html.twig', ['tasks' => $articles]);
     }
 
 
@@ -90,11 +109,13 @@ class TaskController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
 
             if($this->getUser()){
-                $this->getDoctrine()->getManager()->flush();
 
-                $this->addFlash('success', 'La tâche a bien été modifiée.');
+                    $this->getDoctrine()->getManager()->flush();
 
-                return $this->redirectToRoute('task_list');
+                    $this->addFlash('success', 'La tâche a bien été modifiée.');
+
+                    return $this->redirectToRoute('task_list');
+
             }
             else{
 

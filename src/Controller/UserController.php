@@ -19,7 +19,18 @@ class UserController extends AbstractController
      */
     public function listAction()
     {
-        return $this->render('user/list.html.twig', ['users' => $this->getDoctrine()->getRepository('App:User')->findAll()]);
+
+        if($this->getUser()) {
+            return $this->render('user/list.html.twig',
+                ['users' => $this->getDoctrine()->getRepository('App:User')->findAll()]);
+        }
+        else{
+
+            $this->addFlash('error', 'Vous devez vous connecter pour modifier une tache');
+
+            return $this->redirectToRoute('homepage');
+        }
+
     }
 
     /**

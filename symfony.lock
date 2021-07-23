@@ -115,6 +115,12 @@
     "fzaninotto/faker": {
         "version": "v1.9.2"
     },
+    "knplabs/knp-components": {
+        "version": "v3.1.0"
+    },
+    "knplabs/knp-paginator-bundle": {
+        "version": "v5.6.0"
+    },
     "laminas/laminas-code": {
         "version": "4.3.0"
     },
@@ -540,6 +546,9 @@
         "version": "v5.2.9"
     },
     "twig/extra-bundle": {
+        "version": "v3.3.1"
+    },
+    "twig/string-extra": {
         "version": "v3.3.1"
     },
     "twig/twig": {

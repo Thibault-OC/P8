@@ -39,10 +39,10 @@ class UsersFixtures extends Fixture
                 'roles' => [],
             ],
             4=>[
-                'username' => 'anonyme',
-                'email' => 'anonyme@gmail.com',
+                'username' => 'daniel',
+                'email' => 'daniel@gmail.com',
                 'password' => 'password',
-                'roles' => ['ROLE_ADMIN'],
+                'roles' => [],
             ]
 
         ];

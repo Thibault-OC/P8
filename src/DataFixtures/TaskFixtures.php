@@ -16,19 +16,23 @@ class TaskFixtures extends Fixture implements DependentFixtureInterface
     {
         $faker = Faker\Factory::create('fr_FR');
 
+        $nbTaskForUsers = 1;
 
-        for($nbTask = 1; $nbTask <= 10; $nbTask++){
-
-            $user = $this->getReference('user_4');
-
+        for($nbTask = 1; $nbTask <= 20; $nbTask++){
 
             $Task = new Task();
 
-            $Task->setUser($user);
+            if($nbTaskForUsers <= 15) {
 
+                $user = $this->getReference('user_'.$faker->numberBetween(1, 4));
+
+                $Task->setUser($user);
+
+            }
+            $nbTaskForUsers++;
 
             $Task->setTitle($faker->text($maxNbChars = 30) );
-            $Task->setContent($faker->text);
+            $Task->setContent($faker->text($maxNbChars = 600));
             $Task->setCreatedAt($faker->dateTime($max = 'now', $timezone = null));
 
 
@@ -39,6 +43,7 @@ class TaskFixtures extends Fixture implements DependentFixtureInterface
         }
         $manager->flush();
     }
+
 
     public function getDependencies()
     {
