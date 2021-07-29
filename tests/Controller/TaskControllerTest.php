@@ -2,17 +2,38 @@
 
 namespace App\Tests\Controller;
 
-
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 
 class TaskControllerTest extends WebTestCase{
+
 
   public function testListTask()
     {
         $client = static::createClient();
 
         $client->request('GET', '/tasks');
+
+        static::assertSame(200, $client->getResponse()->getStatusCode());
+
+    }
+
+    public function testListTaskFinished()
+    {
+        $client = static::createClient();
+
+        $client->request('GET', '/tasks/finished');
+
+        static::assertSame(200, $client->getResponse()->getStatusCode());
+
+
+    }
+
+    public function testListTaskNotDone()
+    {
+        $client = static::createClient();
+
+        $client->request('GET', '/tasks/notdone');
 
         static::assertSame(200, $client->getResponse()->getStatusCode());
 
@@ -60,7 +81,7 @@ class TaskControllerTest extends WebTestCase{
         $securityControllerTest->setUp();
         $client = $securityControllerTest->testLogin();
 
-        $crawler = $client->request('GET', '/tasks/239/edit');
+        $crawler = $client->request('GET', '/tasks/415/edit');
         static::assertSame(200, $client->getResponse()->getStatusCode());
 
 
@@ -78,7 +99,7 @@ class TaskControllerTest extends WebTestCase{
     {
         $client = static::createClient();
 
-        $crawler = $client->request('GET', '/tasks/239/edit');
+        $crawler = $client->request('GET', '/tasks/415/edit');
         static::assertSame(200, $client->getResponse()->getStatusCode());
 
 
@@ -97,7 +118,7 @@ class TaskControllerTest extends WebTestCase{
     {
         $client = static::createClient();
 
-        $crawler = $client->request('GET', '/tasks/259/delete');
+        $crawler = $client->request('GET', '/tasks/452/delete');
         static::assertSame(302, $client->getResponse()->getStatusCode());
 
         $crawler = $client->followRedirect();
@@ -113,7 +134,7 @@ class TaskControllerTest extends WebTestCase{
         $securityControllerTest->setUp();
         $client = $securityControllerTest->testLogin();
 
-        $crawler = $client->request('GET', '/tasks/259/delete');
+        $crawler = $client->request('GET', '/tasks/452/delete');
         static::assertSame(302, $client->getResponse()->getStatusCode());
 
         $crawler = $client->followRedirect();
@@ -127,7 +148,7 @@ class TaskControllerTest extends WebTestCase{
     {
         $client = static::createClient();
 
-        $crawler = $client->request('GET', '/tasks/239/toggle');
+        $crawler = $client->request('GET', '/tasks/435/toggle');
         static::assertSame(302, $client->getResponse()->getStatusCode());
 
         $crawler = $client->followRedirect();
@@ -144,7 +165,7 @@ class TaskControllerTest extends WebTestCase{
         $securityControllerTest->setUp();
         $client = $securityControllerTest->testLogin();
 
-        $crawler = $client->request('GET', '/tasks/239/toggle');
+        $crawler = $client->request('GET', '/tasks/435/toggle');
         static::assertSame(302, $client->getResponse()->getStatusCode());
 
         $crawler = $client->followRedirect();
@@ -153,9 +174,6 @@ class TaskControllerTest extends WebTestCase{
         $this->assertEquals(1, $crawler->filter('div.alert-success')->count());
 
     }
-
-
-
 
 
 }

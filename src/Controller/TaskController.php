@@ -107,7 +107,7 @@ class TaskController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            if($this->getUser()){
+            if($this->getUser() || $this->isGranted('ROLE_ADMIN') == true){
 
                     $this->getDoctrine()->getManager()->flush();
 

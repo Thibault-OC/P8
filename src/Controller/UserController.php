@@ -20,7 +20,7 @@ class UserController extends AbstractController
     public function listAction()
     {
 
-        if($this->getUser()) {
+        if($this->getUser() && $this->isGranted('ROLE_ADMIN') == true) {
             return $this->render('user/list.html.twig',
                 ['users' => $this->getDoctrine()->getRepository('App:User')->findAll()]);
         }
