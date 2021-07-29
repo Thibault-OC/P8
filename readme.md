@@ -8,7 +8,7 @@
 
 <h2>Codacy</h2>
 
-[![Codacy Badge](https://app.codacy.com/project/badge/Grade/c741d7786baf4bf2885193e024cdaf15)](https://www.codacy.com/gh/Thibault-OC/P7/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Thibault-OC/P7&amp;utm_campaign=Badge_Grade)
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/9ace45e9625f4ad7b8f304d67d34fbb7)](https://www.codacy.com/gh/Thibault-OC/P8/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Thibault-OC/P8&amp;utm_campaign=Badge_Grade)
 
 <h2>Installation avec git</h2>
 
