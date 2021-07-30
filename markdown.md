@@ -15,6 +15,7 @@
 
 <h2>Contributions</h2>
 <ul>
+<li>Créer un ticket/Issues sur github</li>
 <li>Ajouter/Modifier une fonctionnalité du projet, assurez-vous de suivre les normes de codage.</li>
 <li>Tester le code avec PhpUnit avec la commande suivante <code>php bin/phpunit --coverage-html ./tests/report</code></li>
 <li>Poussez votre branche modifiée vers votre fork dans votre compte GitHub : 

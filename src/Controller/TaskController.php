@@ -18,8 +18,27 @@ class TaskController extends AbstractController
      */
     public function listAction(Request $request, PaginatorInterface $paginator , TaskRepository $taskRepository)
     {
+        if(!$this->getUser()) {
+            $this->addFlash('error', 'Vous devez vous connecter pour voir les tâches');
+            return $this->redirectToRoute('homepage');
+        }
 
-        $tasks = $taskRepository->findAll();
+        elseif($this->getUser() && $this->isGranted('ROLE_ADMIN') == true){
+
+            $tasks = $taskRepository->findAll();
+
+            $articles = $paginator->paginate(
+                $tasks, // Requête contenant les données à paginer (ici nos tasks)
+                $request->query->getInt('page', 1), // Numéro de la page en cours, passé dans l'URL, 1 si aucune page
+                6 // Nombre de résultats par page
+            );
+
+            return $this->render('task/list.html.twig', ['tasks' => $articles]);
+        }
+
+        $tasks = $taskRepository->findBy(
+            ['user' => $this->getUser()->getId()]
+        );
 
         $articles = $paginator->paginate(
             $tasks, // Requête contenant les données à paginer (ici nos tasks)
@@ -35,9 +54,28 @@ class TaskController extends AbstractController
      */
     public function listActionFinished(Request $request, PaginatorInterface $paginator ,TaskRepository $taskRepository) :Response
     {
+        if(!$this->getUser()) {
+            $this->addFlash('error', 'Vous devez vous connecter pour voir les tâches');
+            return $this->redirectToRoute('homepage');
+        }
+        elseif($this->getUser() && $this->isGranted('ROLE_ADMIN') == true){
+
+            $tasks = $taskRepository->findBy(
+                ['isDone' => 1]
+            );
+
+            $articles = $paginator->paginate(
+                $tasks, // Requête contenant les données à paginer (ici nos tasks)
+                $request->query->getInt('page', 1), // Numéro de la page en cours, passé dans l'URL, 1 si aucune page
+                6 // Nombre de résultats par page
+            );
+            return $this->render('task/list.html.twig', ['tasks' => $articles]);
+        }
+
         $tasks = $taskRepository->findBy(
-            ['isDone' => 1]
+            ['isDone' => 1 , 'user' => $this->getUser()->getId()]
         );
+
         $articles = $paginator->paginate(
             $tasks, // Requête contenant les données à paginer (ici nos tasks)
             $request->query->getInt('page', 1), // Numéro de la page en cours, passé dans l'URL, 1 si aucune page
@@ -51,8 +89,25 @@ class TaskController extends AbstractController
      */
     public function listActionNotDone(Request $request, PaginatorInterface $paginator ,TaskRepository $taskRepository) :Response
     {
+        if(!$this->getUser()) {
+            $this->addFlash('error', 'Vous devez vous connecter pour voir les tâches');
+            return $this->redirectToRoute('homepage');
+        }
+        elseif($this->getUser() && $this->isGranted('ROLE_ADMIN') == true){
+            $tasks = $taskRepository->findBy(
+                ['isDone' => 0]
+            );
+
+            $articles = $paginator->paginate(
+                $tasks, // Requête contenant les données à paginer (ici nos tasks)
+                $request->query->getInt('page', 1), // Numéro de la page en cours, passé dans l'URL, 1 si aucune page
+                6 // Nombre de résultats par page
+            );
+            return $this->render('task/list.html.twig', ['tasks' => $articles]);
+        }
+
         $tasks = $taskRepository->findBy(
-            ['isDone' => 0]
+            ['isDone' => 0 , 'user' => $this->getUser()->getId()]
         );
         $articles = $paginator->paginate(
             $tasks, // Requête contenant les données à paginer (ici nos tasks)
